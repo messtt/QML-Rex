@@ -12,9 +12,7 @@ file(GLOB_RECURSE SRC_FILES src/*.cpp)
 file(GLOB_RECURSE HEADER_FILES src/*.hpp)
 
 # Change the name of the executable to avoid conflict
-qt_add_executable(QML_RexApp ${SRC_FILES} ${HEADER_FILES}
-        src/BackEnd.hpp
-        src/BackEnd.cpp)
+qt_add_executable(QML_RexApp ${SRC_FILES} ${HEADER_FILES})
 
 qt_add_qml_module(QML_RexApp
         URI QML-Rex VERSION 1.0

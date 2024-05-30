@@ -1,22 +1,33 @@
 import QtQuick
 import QtQuick.Controls
-import io.qt.examples.backend
+import QtQuick.Layouts
+
 
 ApplicationWindow {
-    id: root
-    width: 300
-    height: 480
     visible: true
+    width: 640
+    height: 480
+    title: "ColumnLayout Example"
 
-    BackEnd {
-        id: backend
-    }
+    ColumnLayout {
+        anchors.fill: parent
 
-    TextField {
-        text: backend.userName
-        placeholderText: qsTr("Enter your name")
-        anchors.centerIn: parent
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            color: "red"
+        }
 
-        onEditingFinished: backend.userName = text
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            color: "green"
+        }
+
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            color: "blue"
+        }
     }
 }
