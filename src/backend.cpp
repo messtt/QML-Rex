@@ -1,8 +1,10 @@
 #include "backend.h"
+#include <iostream>
 
 BackEnd::BackEnd(QObject *parent) :
     QObject(parent)
 {
+    std::cout << "Backend created" << std::endl;
 }
 
 QString BackEnd::userName()

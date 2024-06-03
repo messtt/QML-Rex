@@ -1,4 +1,3 @@
-// main.cpp
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -10,7 +9,7 @@ int main(int argc, char *argv[]) {
 
     qmlRegisterType<BackEnd>("backend", 1, 0, "BackEnd");
 
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
 
