@@ -1,5 +1,5 @@
-import QtQuick
-import QtQuick.Window
+import QtQuick 2.5
+import QtQuick.Window 2.5
 import "Components"
 
 Window {
@@ -24,6 +24,10 @@ Window {
         width: 1280
         height: 480
         anchors.centerIn: parent
+        color: "transparent"
+        border.color: "black"
+        border.width: 1
+
         Rectangle {
             id: gameArea
             anchors.fill: parent
@@ -75,11 +79,73 @@ Window {
                 frameDuration: 100
                 frameX: 1514
                 frameY: 0
-
             }
         }
+
+        // Animation pour le saut
+        SequentialAnimation {
+            id: jumpAnimation
+            running: false
+            PropertyAnimation {
+                target: spriteAnimationRun
+                property: "y"
+                from: spriteAnimationRun.y
+                to: spriteAnimationRun.y - 150
+                duration: 250
+                easing.type: Easing.OutQuad
+            }
+            PropertyAnimation {
+                target: spriteAnimationRun
+                property: "y"
+                from: spriteAnimationRun.y - 150
+                to: spriteAnimationRun.y
+                duration: 250
+                easing.type: Easing.InQuad
+            }
+        }
+
+        SequentialAnimation {
+            id: crouchiAnimation
+            running: false
+            PropertyAnimation {
+                target: spriteAnimationRun
+                property: "y"
+                from: spriteAnimationRun.y
+                to: game.height - 55 - 20
+                duration: 150
+                easing.type: Easing.OutQuad
+            }
+        }
+
         GameInfo {
             multiplier: timeSpend
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                console.log("Clic de souris dans le jeu aux coordonnées:", mouse.x, mouse.y)
+            }
+        }
+
+        focus: true
+        Keys.onPressed: {
+            console.log("Touche pressée dans le jeu:", event.key)
+            if (event.key === Qt.Key_Space) {
+                if (!jumpAnimation.running) {
+                    jumpAnimation.start()
+                }
+            }
+            if (event.key === Qt.Key_Down) {
+                if (jumpAnimation.running) {
+                    jumpAnimation.stop()
+                    crouchiAnimation.start()
+                }
+            }
+        }
+
+        Component.onCompleted: {
+            console.log("Le jeu est chargé et prêt")
         }
     }
 }
