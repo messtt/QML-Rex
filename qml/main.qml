@@ -8,7 +8,16 @@ Window {
     width: 1280
     height: 720
     title: "Jeu avec Animation de Sprites"
+    property bool is_jumping: false
     property int timeSpend: 0
+
+    onIs_jumpingChanged: {
+        if (is_jumping) {
+            spriteAnimationRun.running = false;
+        } else {
+            spriteAnimationRun.running = true;
+        }
+    }
 
     Timer {
         id: timer
@@ -102,6 +111,9 @@ Window {
                 duration: 250
                 easing.type: Easing.InQuad
             }
+            onRunningChanged: {
+                mainWindow.is_jumping = !mainWindow.is_jumping
+            }
         }
 
         SequentialAnimation {
@@ -114,6 +126,9 @@ Window {
                 to: game.height - 55 - 20
                 duration: 150
                 easing.type: Easing.OutQuad
+            }
+            onRunningChanged: {
+                mainWindow.is_jumping = !mainWindow.is_jumping
             }
         }
 
@@ -132,9 +147,13 @@ Window {
         Keys.onPressed: {
             console.log("Touche pressée dans le jeu:", event.key)
             if (event.key === Qt.Key_Space) {
+                spriteAnimationRun.setRunning(false)
                 if (!jumpAnimation.running) {
                     jumpAnimation.start()
                 }
+            }
+            if (!jumpAnimation.running) {
+                spriteAnimationRun.setRunning(true)
             }
             if (event.key === Qt.Key_Down) {
                 if (jumpAnimation.running) {
@@ -143,7 +162,6 @@ Window {
                 }
             }
         }
-
         Component.onCompleted: {
             console.log("Le jeu est chargé et prêt")
         }
