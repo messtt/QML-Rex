@@ -2,6 +2,8 @@
     <qresource prefix="/">
         <file>qml/main.qml</file>
         <file>qml/Components/GameInfo.qml</file>
+        <file>qml/Components/Roof.qml</file>
+        <file>qml/Components/Rex.qml</file>
         <file>assets/offline-sprite-1x.png</file>
         <file>assets/offline-sprite-2x.png</file>
         <file>assets/roof.png</file>
