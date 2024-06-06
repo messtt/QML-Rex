@@ -41,6 +41,14 @@ Window {
 
         }
 
+        Cactus {
+
+        }
+
+        // Bird {
+
+        // }
+
         Rex {
             id: rex
         }

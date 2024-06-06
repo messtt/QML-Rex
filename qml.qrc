@@ -3,9 +3,15 @@
         <file>qml/main.qml</file>
         <file>qml/Components/GameInfo.qml</file>
         <file>qml/Components/Roof.qml</file>
+        <file>qml/Components/Cactus.qml</file>
+        <file>qml/Components/Bird.qml</file>
         <file>qml/Components/Rex.qml</file>
         <file>assets/offline-sprite-1x.png</file>
         <file>assets/offline-sprite-2x.png</file>
+        <file>assets/two_cactus.png</file>
+        <file>assets/four_cactus.png</file>
+        <file>assets/three_cactus.png</file>
+        <file>assets/two_cactus_small.png</file>
         <file>assets/roof.png</file>
     </qresource>
 </RCC>
