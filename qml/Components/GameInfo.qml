@@ -7,15 +7,31 @@ Rectangle {
     color: "lightblue"
     id: gameInfos
     property int timeElapsed: 0
-    property int multiplier: 1
+    property int multiplier: 0
+    property bool isOver: false
+
+    onMultiplierChanged: {
+        console.log("mult: " + multiplier)
+        console.log("interval: " + timer.interval)
+        if (timer.interval <= 50)
+            timer.interval = 50
+        else
+            timer.interval = 200 - multiplier
+    }
+
+    onIsOverChanged: {
+        if (isOver) {
+            timer.stop()
+        }
+    }
 
     Timer {
         id: timer
-        interval: 100
-        running: true
-        repeat: true
+        interval: 200
+        running: !isOver
+        repeat: !isOver
         onTriggered: {
-            gameInfos.timeElapsed += (1 + (multiplier * 0.1))
+            gameInfos.timeElapsed += 1
         }
     }
 

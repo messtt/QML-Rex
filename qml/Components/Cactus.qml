@@ -11,6 +11,7 @@ Rectangle {
 
     property var currCactus: randomCactusImage()
     property int multiplier: 0
+    property bool isOver: false
 
     function randomCactusImage() {
         var images = [
@@ -36,7 +37,7 @@ Rectangle {
         to: -(width + 20)
         duration: (2775 + (currCactus[1] * 0.95) * (multiplier + 1))
         loops: Animation.Infinite
-        running: true
+        running: isOver ? false : true
     }
     onXChanged: {
         if (cactus.x > 1270) {

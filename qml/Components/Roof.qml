@@ -4,6 +4,8 @@ import QtQuick.Window 2.5
 
 Repeater {
     model: 2
+    property bool isOver: false
+
     Image {
         source: "../../assets/roof.png"
         sourceSize.width: 2404
@@ -18,7 +20,7 @@ Repeater {
             to: (index - 1) * width
             duration: 5000
             loops: Animation.Infinite
-            running: true
+            running: isOver ? false : true
         }
     }
 }

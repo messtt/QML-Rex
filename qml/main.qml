@@ -16,13 +16,7 @@ Window {
     property bool gameOver: false
 
     function checkCollision(r1, r2) {
-        console.log("r1 x: " + r1.x + " r2 x: " + r2.x)
-        return !(
-            r1.x + r1.width < r2.x ||
-            r2.x + r2.width < r1.x ||
-            r1.y + r1.height < r2.y ||
-            r2.y + r2.height < r1.y
-        );
+        return !(r1.x + r1.width < r2.x || r2.x + r2.width < r1.x || r1.y + (r1.height / 3) < r2.y || r2.y + r2.height < r1.y);
     }
 
     onIs_jumpingChanged: {
@@ -33,29 +27,32 @@ Window {
         }
     }
 
-    onTimeSpendChanged: {
-
-    }
-
     Timer {
         id: gameTime
-        interval: 1000
+        interval: 300
         running: true
         repeat: true
         onTriggered: {
             mainWindow.timeSpend += 1
+            gameInfo.multiplier += 1
         }
     }
 
     Timer {
         id: colisionCheck
-        interval: 200
+        interval: 10
         running: true
         repeat: true
         onTriggered: {
             if (checkCollision(rex, cactus) === true) {
-                console.log("!!!!Colision!!!!")
                 mainWindow.gameOver = true
+                roof.isOver = true
+                cactus.isOver = true
+                rex.isOver = true
+                gameInfo.isOver = true
+                gameTime.running = false
+                gameTime.stop()
+                gameTime.repeat = false
             }
         }
     }
@@ -70,31 +67,30 @@ Window {
         border.width: 1
 
         Roof {
-
+            id: roof
         }
 
         Cactus {
             id: cactus
         }
 
-
         Rex {
             id: rex
         }
 
         GameInfo {
-            multiplier: timeSpend
+            id: gameInfo
         }
 
         focus: true
         Keys.onPressed: {
-            if (!mainWindow.gamePaused) {
+            if (!mainWindow.gameOver) {
                 if (event.key === Qt.Key_Space) {
                     if (!rex.rexJumpAnimation.running) {
                         rex.rexJumpAnimation.start()
                     }
                 }
-                if (event.key === Qt.Key_Down) {
+                if (!mainWindow.gameOver && event.key === Qt.Key_Down) {
                     if (rex.rexJumpAnimation.running) {
                         rex.rexJumpAnimation.stop()
                         rex.rexCrouchiAnimation.start()

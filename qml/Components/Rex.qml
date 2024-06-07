@@ -12,13 +12,25 @@ Rectangle {
     property var rexJumpAnimation: rexJumpAnimation // Exposer la propriété rexJumpAnimation
     property var rexCrouchiAnimation: rexCrouchiAnimation
     property var rexRunAnimation: rexRunAnimation
+    property bool isOver: false
 
+
+    onIsOverChanged: {
+        if (isOver) {
+            rexRunAnimation.running = false
+            rexJumpAnimation.stop()
+            animUp.stop()
+            animDown.stop()
+            rexCrouchiAnimation.stop()
+            rexRunAnimation.sprites.frameCount = 1
+        }
+    }
 
     SpriteSequence {
         id: rexRunAnimation
         width: parent.width
         height: parent.height
-        running: true
+        running: !isOver
         interpolate: false
         goalSprite: "run"
         Sprite {
@@ -35,8 +47,9 @@ Rectangle {
 
     SequentialAnimation {
         id: rexJumpAnimation
-        running: false
+        running: !isOver
         PropertyAnimation {
+            id: animUp
             target: rex
             property: "y"
             from: rex.y
@@ -45,6 +58,7 @@ Rectangle {
             easing.type: Easing.OutQuad
         }
         PropertyAnimation {
+            id: animDown
             target: rex
             property: "y"
             from: rex.y - 100
@@ -59,7 +73,7 @@ Rectangle {
 
     SequentialAnimation {
         id: rexCrouchiAnimation
-        running: false
+        running: !isOver
         PropertyAnimation {
             target: rex
             property: "y"
