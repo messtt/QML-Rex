@@ -10,6 +10,7 @@ Rectangle {
     x: game.width
 
     property var currCactus: randomCactusImage()
+    property int multiplier: 0
 
     function randomCactusImage() {
         var images = [
@@ -33,12 +34,11 @@ Rectangle {
     NumberAnimation on x {
         from: game.width
         to: -(width + 20)
-        duration: 2775 + (currCactus[1] * 0.95)
+        duration: (2775 + (currCactus[1] * 0.95) * (multiplier + 1))
         loops: Animation.Infinite
         running: true
     }
     onXChanged: {
-        console.log("x: " + cactus.x)
         if (cactus.x > 1270) {
             currCactus = randomCactusImage()
             cactusImage.source = currCactus[0]
