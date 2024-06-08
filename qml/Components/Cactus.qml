@@ -5,8 +5,8 @@ Rectangle {
     id: cactus
     width: 50
     height: 60
-    color: "blue"
-    y: parent.height - height - 10
+    color: "transparent"
+    y: parent.height - height - 20
     x: game.width
 
     property var currCactus: randomCactusImage()

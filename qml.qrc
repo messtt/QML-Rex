@@ -6,6 +6,7 @@
         <file>qml/Components/Cactus.qml</file>
         <file>qml/Components/Bird.qml</file>
         <file>qml/Components/Rex.qml</file>
+        <file>qml/Components/Cloud.qml</file>
         <file>assets/offline-sprite-1x.png</file>
         <file>assets/offline-sprite-2x.png</file>
         <file>assets/two_cactus.png</file>
@@ -13,6 +14,9 @@
         <file>assets/three_cactus.png</file>
         <file>assets/two_cactus_small.png</file>
         <file>assets/roof.png</file>
+        <file>assets/cloud.png</file>
+        <file>assets/restart.png</file>
+        <file>assets/game_over.png</file>
     </qresource>
 </RCC>
 
