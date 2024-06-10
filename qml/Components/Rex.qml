@@ -19,9 +19,9 @@ Rectangle {
         interval: 10
         repeat: true
         onTriggered: {
-            console.log("Jump rex please!!")
-            console.log("game.height - height: " + (game.height - height - 25))
-            console.log("((rexRectangle.y * 3.14) / 300): " + ((rexRectangle.y * 3.14) / 55))
+            if (currKeyPress === Qt.Key_Down) {
+                running = false
+            }
             if (rexRectangle.y > game.height - height - 90) {
                 rexRectangle.y -= 8
             }
@@ -50,6 +50,10 @@ Rectangle {
         interval: 10
         repeat: true
         onTriggered: {
+            if (currKeyPress === Qt.Key_Down) {
+                running = false
+            }
+
             if (rexRectangle.y < game.height - height - 120){
                 rexRectangle.y += 1
             }
@@ -82,10 +86,8 @@ Rectangle {
         interval: 10
         repeat: true
         onTriggered: {
-            console.log("Jump rex please!!")
-            console.log("Rex y: " + rexRectangle.y)
             if (rexRectangle.y < (game.height - height - 25)) {
-                rexRectangle.y += 3
+                rexRectangle.y += 7
             } else {
                 running = false
                 if (currKeyPress === Qt.Key_Down) {
@@ -98,7 +100,6 @@ Rectangle {
     }
 
     onRexStatusChanged: {
-        rexRectangle.y = game.height - height - 25
         image.width = 55
         image.height = 60
         if (rexStatus === "crouch") {
@@ -108,14 +109,15 @@ Rectangle {
         image.goalSprite = "";
         image.jumpTo(rexStatus);
         if (rexStatus === "crouch") {
-            if (jump.running === true) {
-                rexUpPropertyAnimation.stop()
-                rexDownPropertyAnimation.stop()
-                jump.stop()
-                speedDown.start()
+            if (rexJumpDownTimer.running === true || rexJumpUpTimer.running === true) {
+                rexJumpUpTimer.running = false
+                rexJumpDownTimer.running = false
+                speedDown.running = true
             }
         } else if (rexStatus === "jump") {
             rexJumpUpTimer.running = true
+        } else if (rexStatus === "run") {
+            rexRectangle.y = game.height - height - 25
         }
     }
 
