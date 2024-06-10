@@ -1,17 +1,22 @@
 import QtQuick 2.5
 import QtQuick.Window 2.5
 
-Rectangle {
-    id: cactus
-    width: 50
-    height: 60
-    color: "transparent"
-    y: parent.height - height - 20
-    x: game.width
+Item {
+    id: cactusItem
+    width: parent.width
+    height: parent.height
 
-    property var currCactus: randomCactusImage()
-    property int multiplier: 0
     property bool isOver: false
+    property int multiplier: 1
+
+    function randomCactusSpawn(max) {
+        let rand = Math.floor(Math.random() * (max + 1));
+        console.log("rand: " + rand)
+        if (rand === max) {
+            return true;
+        }
+        return false;
+    }
 
     function randomCactusImage() {
         var images = [
@@ -24,29 +29,65 @@ Rectangle {
         return images[index];
     }
 
-    Image {
-        id: cactusImage
-        anchors.fill: parent
-        sourceSize.width: 50
-        sourceSize.height: 60
-        source: currCactus[0]
+    Timer {
+        id: cactusMoveTimer
+        repeat: true
+        interval: 1
+        running: true
+        onTriggered: {
+            for (let i = 0; i < cactusModel.count; i++) {
+                let cactus = cactusModel.get(i);
+                if (cactus.x < -cactus.width) {
+                    cactusModel.remove(i);
+                } else {
+                    cactus.x -= 1 * multiplier;
+                    cactusModel.set(i, cactus);
+                }
+            }
+        }
     }
 
-    NumberAnimation on x {
-        from: game.width
-        to: -(width + 20)
-        duration: (2775 + (currCactus[1] * 0.95) * (multiplier + 1))
-        loops: Animation.Infinite
-        running: isOver ? false : true
+    Timer {
+        id: cactusSpawnTimer
+        repeat: true
+        interval: 500
+        running: true
+        onTriggered: {
+            console.log("cactusSpawnTimer triggered")
+            var lastCactus;
+            if (cactusModel.count > 0) {
+                lastCactus = cactusModel.get(cactusModel.count - 1)
+                console.log("number of cactus: " + cactusModel.count)
+                console.log("pos last cactus: " + lastCactus.x)
+            }
+            if (cactusModel.count <= 0 || randomCactusSpawn(2) === true && lastCactus.x < mainWindow.width / 1.7) {
+                console.log("Spawning a new cactus")
+                var cactusInfo = randomCactusImage();
+                cactusModel.append({
+                    source: cactusInfo[0],
+                    width: cactusInfo[1],
+                    height: cactusInfo[2],
+                    x: cactusItem.width,
+                    y: cactusItem.height - cactusInfo[2] - 20
+                });
+            }
+        }
     }
-    onXChanged: {
-        if (cactus.x > 1270) {
-            currCactus = randomCactusImage()
-            cactusImage.source = currCactus[0]
-            cactusImage.sourceSize.width = currCactus[1]
-            cactusImage.sourceSize.height = currCactus[2]
-            cactus.width = currCactus[1]
-            cactus.height = currCactus[2]
+
+    ListModel {
+        id: cactusModel
+    }
+
+    Repeater {
+        id: cactusRepeater
+        model: cactusModel
+        delegate: Image {
+            id: cactusImage
+            source: model.source
+            width: model.width
+            height: model.height
+            x: model.x
+            y: model.y
         }
     }
 }

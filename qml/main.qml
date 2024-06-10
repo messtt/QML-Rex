@@ -80,9 +80,9 @@ Window {
             id: roof
         }
 
-        // Cactus {
-        //     id: cactus
-        // }
+        Cactus {
+            id: cactus
+        }
 
         // Rex {
         //     id: rex
