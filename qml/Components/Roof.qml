@@ -6,7 +6,7 @@ Item {
     width: parent.width
     height: parent.height
     property bool isOver: false
-    property int multiplier: 1
+    property int multiplier: 2
 
     Timer {
         id: moveTimer

@@ -12,43 +12,44 @@ Item {
     property int cloudCount: 0
 
     Timer {
-            id: cloudTimer
-            interval: 3000
-            repeat: true
-            running: true
-            onTriggered: {
-                for (var i = 0; i < cloudModel.count; i++) {
-                    if (cloudCount > 0) {
-                        var cloud = cloudModel.get(i);
-                        if (cloud.x < 0) {
-                            cloudModel.remove(i);
-                            cloudCount--;
-                        }
+        id: cloudTimer
+        interval: 3000
+        repeat: true
+        running: true
+        onTriggered: {
+            for (var i = 0; i < cloudModel.count; i++) {
+                if (cloudCount > 0) {
+                    var cloud = cloudModel.get(i);
+                    if (cloud.x < 0) {
+                        cloudModel.remove(i);
+                        cloudCount--;
                     }
                 }
-                if (cloudCount < (mainWindow.width + mainWindow.height) / 200) {
-                    cloudModel.append({ x: mainWindow.width, y: randomY(0, (mainWindow.height - 100)) });
-                    cloudCount++;
-                }
+            }
+            if (cloudCount < (mainWindow.width + mainWindow.height) / 200) {
+                cloudModel.append({ x: mainWindow.width, y: randomY(0, (mainWindow.height - 100)) });
+                cloudCount++;
             }
         }
+    }
 
     Timer {
-            id: moveTimer
-            interval: 30
-            repeat: true
-            running: true
-            onTriggered: {
-                for (var i = 0; i < cloudModel.count; i++) {
-                    var cloud = cloudModel.get(i);
-                    cloud.x -= 2;
-                    if (cloud.x + 120 < 0) {
-                        cloud.x = width;
-                    }
-                    cloudModel.set(i, cloud);
+        id: moveTimer
+        interval: 30
+        repeat: true
+        running: true
+        onTriggered: {
+            for (var i = 0; i < cloudModel.count; i++) {
+                var cloud = cloudModel.get(i);
+                cloud.x -= 2;
+                if (cloud.x + 120 < 0) {
+                    cloud.x = width;
                 }
+                cloudModel.set(i, cloud);
             }
         }
+    }
+
     ListModel {
         id: cloudModel
     }

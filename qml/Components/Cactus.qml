@@ -7,7 +7,7 @@ Item {
     height: parent.height
 
     property bool isOver: false
-    property int multiplier: 1
+    property int multiplier: 2
 
     function randomCactusSpawn(max) {
         let rand = Math.floor(Math.random() * (max + 1));
