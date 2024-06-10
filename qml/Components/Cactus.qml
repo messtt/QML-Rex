@@ -11,7 +11,6 @@ Item {
 
     function randomCactusSpawn(max) {
         let rand = Math.floor(Math.random() * (max + 1));
-        console.log("rand: " + rand)
         if (rand === max) {
             return true;
         }
@@ -50,18 +49,14 @@ Item {
     Timer {
         id: cactusSpawnTimer
         repeat: true
-        interval: 500
+        interval: 400
         running: true
         onTriggered: {
-            console.log("cactusSpawnTimer triggered")
             var lastCactus;
             if (cactusModel.count > 0) {
                 lastCactus = cactusModel.get(cactusModel.count - 1)
-                console.log("number of cactus: " + cactusModel.count)
-                console.log("pos last cactus: " + lastCactus.x)
             }
-            if (cactusModel.count <= 0 || randomCactusSpawn(2) === true && lastCactus.x < mainWindow.width / 1.7) {
-                console.log("Spawning a new cactus")
+            if (cactusModel.count <= 0 || randomCactusSpawn(1) === true && lastCactus.x < mainWindow.width / 1.5) {
                 var cactusInfo = randomCactusImage();
                 cactusModel.append({
                     source: cactusInfo[0],

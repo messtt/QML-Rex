@@ -2,161 +2,84 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Rectangle {
-    id: rex
+    id: rexRectangle
     width: 55
     height: 60
-    color: "green"
-    y: game.height - height - 22
+
+    color: "transparent"
     x: 20
+    y: game.height - height - 25
 
-    property var rexJumpAnimation: rexJumpAnimation
-    property var rexCrouchiAnimation: rexCrouchiAnimation
-    property var rexRunAnimation: rexRunAnimation
-    property var speedDown: speedDown
-    property bool isOver: false
-    property bool isRunning: false
-    property bool isCrouching: false
+    property string rexStatus: "run"
 
-    onIsRunningChanged: {
-        if (isRunning) {
-            rexCrouchAnimation.visible = false
-            rexDeathAnimation.visible = false
-            rexRunAnimation.visible = true
-        } else {
-            rexRunAnimation.visible = false
-        }
+    onRexStatusChanged: {
+        anim.start();
     }
 
-    onIsCrouchingChanged: {
-        console.log("crouching")
-        if (isCrouching) {
-            rexCrouchAnimation.visible = true
-            rexDeathAnimation.visible = false
-            rexRunAnimation.visible = false
-            rex.width = 60
-            rex.height = 50
-        } else {
-            rexCrouchAnimation.visible = false
+
+    SequentialAnimation {
+        id: anim
+        ScriptAction {
+            script: {
+                image.goalSprite = "";
+                image.jumpTo(rexStatus);
+            }
+        }
+        PropertyAction {
+            target: image;
+            property: "y";
+            value: 0
         }
     }
-
-    onIsOverChanged: {
-        if (isOver) {
-            rexRunAnimation.visible = false
-            rexCrouchAnimation.visible = false
-            rexDeathAnimation.visible = true
-            rexRunAnimation.running = false
-            rexJumpAnimation.stop()
-            animUp.stop()
-            animDown.stop()
-            speedDownAnimation.stop()
-            rexCrouchiAnimation.stop()
-            speedDown.stop()
-        }
-    }
-
     SpriteSequence {
-        id: rexRunAnimation
+        id: image
         width: parent.width
         height: parent.height
-        running: true
+        anchors.horizontalCenter: parent.horizontalCenter
         interpolate: false
-        goalSprite: "run"
         Sprite {
-            id: rexRunAnimationSprite
+            id: rexRunSprite
             name: "run"
             source: "../../assets/offline-sprite-2x.png"
             frameCount: 2
-            frameWidth: 88
-            frameHeight: 93
             frameDuration: 100
+            frameWidth: 88
+            frameHeight: 97
             frameX: 1514
             frameY: 0
         }
-    }
-
-    SpriteSequence {
-        id: rexCrouchAnimation
-        width: parent.width
-        height: parent.height
-        running: false
-        interpolate: false
-        visible: false
-        goalSprite: "crouch"
         Sprite {
-            id: rexCrouchAnimationSprite
-            name: "crouch"
-            source: "../../assets/offline-sprite-2x.png"
-            frameCount: 2
-            frameWidth: 88
-            frameHeight: 93
-            frameDuration: 100
-            frameX: 200
-            frameY: 0
-        }
-    }
-
-    SpriteSequence {
-        id: rexDeathAnimation
-        width: parent.width
-        height: parent.height
-        running: false
-        interpolate: false
-        visible: false
-        goalSprite: "dead"
-        Sprite {
-            id: rexDeathAnimationSprite
-            name: "dead"
+            id: rexDieSprite
+            name: "die"
             source: "../../assets/offline-sprite-2x.png"
             frameCount: 1
-            frameWidth: 90
-            frameHeight: 93
             frameDuration: 10000
+            frameWidth: 88
+            frameHeight: 97
             frameX: 1690
             frameY: 0
         }
-    }
-
-    SequentialAnimation {
-        id: rexJumpAnimation
-        running: !isOver
-        PropertyAnimation {
-            id: animUp
-            target: rex
-            property: "y"
-            from: rex.y
-            to: rex.y - 130
-            duration: 250
-            easing.type: Easing.OutQuad
+        Sprite {
+            id: rexCrouchSprite
+            name: "crouch"
+            source: "../../assets/offline-sprite-2x.png"
+            frameCount: 2
+            frameDuration: 100
+            frameWidth: 118
+            frameHeight: 97
+            frameX: 1865
+            frameY: 0
         }
-        PropertyAnimation {
-            id: animDown
-            target: rex
-            property: "y"
-            from: rex.y - 130
-            to: rex.y
-            duration: 250
-            easing.type: Easing.InQuad
-        }
-        onRunningChanged: {
-            mainWindow.is_jumping = !mainWindow.is_jumping
-        }
-    }
-
-    SequentialAnimation {
-        id: speedDown
-        running: !isOver
-        PropertyAnimation {
-            id: speedDownAnimation
-            target: rex
-            property: "y"
-            from: rex.y
-            to: game.height - rex.height - 20
-            duration: 150
-            easing.type: Easing.OutQuad
-        }
-        onRunningChanged: {
-            mainWindow.is_jumping = !mainWindow.is_jumping
+        Sprite {
+            id: rexJumpSprite
+            name: "jump"
+            source: "../../assets/offline-sprite-2x.png"
+            frameCount: 2
+            frameDuration: 100
+            frameWidth: 118
+            frameHeight: 97
+            frameX: 1865
+            frameY: 0
         }
     }
 }

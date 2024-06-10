@@ -12,18 +12,18 @@ Window {
     height: 300
     title: "QML-Rex"
 
-    property bool is_jumping: false
-    property int timeSpend: 0
-    property bool gameOver: false
+    // property bool is_jumping: false
+    // property int timeSpend: 0
+    // property bool gameOver: false
 
-    function checkCollision(r1, r2)
-    {
-        return !(r1.x + r1.width < r2.x || r2.x + r2.width < r1.x || r1.y + (r1.height / 1.5) < r2.y || r2.y + (r2.height / 3) < r1.y);
-    }
+    // function checkCollision(r1, r2)
+    // {
+    //     return !(r1.x + r1.width < r2.x || r2.x + r2.width < r1.x || r1.y + (r1.height / 1.5) < r2.y || r2.y + (r2.height / 3) < r1.y);
+    // }
 
-    onGameOverChanged: {
-        BackEnd.writeToFile("qrc:Save/save.txt", gameInfo.timeElapsed)
-    }
+    // onGameOverChanged: {
+    //     BackEnd.writeToFile("qrc:Save/save.txt", gameInfo.timeElapsed)
+    // }
 
     // onIs_jumpingChanged: {
     //     if (is_jumping || gameOver) {
@@ -84,9 +84,9 @@ Window {
             id: cactus
         }
 
-        // Rex {
-        //     id: rex
-        // }
+        Rex {
+            id: rex
+        }
 
         // GameInfo {
         //     id: gameInfo
@@ -122,35 +122,35 @@ Window {
     //     }
     }
 
-    Rectangle {
-        id: endGame
-        width: 300
-        height: 200
-        anchors.centerIn: game
-        visible: mainWindow.gameOver ? true : false
-        Image {
-            id: gameOverText
-            height: 20
-            width: parent.width
-            anchors.fill: parent.Center
-            source: "../assets/game_over.png"
-        }
-        MouseArea {
-            id: restartMouseArea
-            anchors.fill: parent
+    // Rectangle {
+    //     id: endGame
+    //     width: 300
+    //     height: 200
+    //     anchors.centerIn: game
+    //     visible: mainWindow.gameOver ? true : false
+    //     Image {
+    //         id: gameOverText
+    //         height: 20
+    //         width: parent.width
+    //         anchors.fill: parent.Center
+    //         source: "../assets/game_over.png"
+    //     }
+    //     MouseArea {
+    //         id: restartMouseArea
+    //         anchors.fill: parent
 
-            Image {
-                id: restart
-                height: 70
-                width: 80
-                anchors.centerIn: parent
-                source: "../assets/restart.png"
-            }
+    //         Image {
+    //             id: restart
+    //             height: 70
+    //             width: 80
+    //             anchors.centerIn: parent
+    //             source: "../assets/restart.png"
+    //         }
 
-            onClicked: {
-                console.log("Restart image clicked")
-            }
-        }
-    }
+    //         onClicked: {
+    //             console.log("Restart image clicked")
+    //         }
+    //     }
+    // }
 }
 

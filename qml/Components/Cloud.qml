@@ -20,16 +20,13 @@ Item {
                 for (var i = 0; i < cloudModel.count; i++) {
                     if (cloudCount > 0) {
                         var cloud = cloudModel.get(i);
-                        console.log("cloud.x: " + cloud.x)
                         if (cloud.x < 0) {
-                            console.log("zkfbzcnf")
                             cloudModel.remove(i);
                             cloudCount--;
                         }
                     }
                 }
                 if (cloudCount < (mainWindow.width + mainWindow.height) / 200) {
-                    console.log("cloudCount: " + cloudCount)
                     cloudModel.append({ x: mainWindow.width, y: randomY(0, (mainWindow.height - 100)) });
                     cloudCount++;
                 }
