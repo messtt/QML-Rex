@@ -12,7 +12,6 @@ Window {
     height: 300
     title: "QML-Rex"
 
-    // property bool is_jumping: false
     // property int timeSpend: 0
     // property bool gameOver: false
 
@@ -23,14 +22,6 @@ Window {
 
     // onGameOverChanged: {
     //     BackEnd.writeToFile("qrc:Save/save.txt", gameInfo.timeElapsed)
-    // }
-
-    // onIs_jumpingChanged: {
-    //     if (is_jumping || gameOver) {
-    //         rex.rexRunAnimation.running = false;
-    //     } else {
-    //         rex.rexRunAnimation.running = true;
-    //     }
     // }
 
     // Timer {
@@ -92,34 +83,31 @@ Window {
         //     id: gameInfo
         // }
 
-    //     focus: true
-    //     Keys.onPressed: {
-    //         if (!mainWindow.gameOver) {
-    //             if (event.key === Qt.Key_Space && event.key !== Qt.Key_Down) {
-    //                 if (!rex.rexJumpAnimation.running) {
-    //                     rex.rexJumpAnimation.start()
-    //                 }
-    //             }
-    //             if (!mainWindow.gameOver && event.key === Qt.Key_Down) {
-    //                 if (rex.rexJumpAnimation.running) {
-    //                     rex.rexJumpAnimation.stop()
-    //                     rex.speedDown.start()
-    //                 }
-    //                 rex.isCrouching = true
-    //             }
-    //         }
-    //     }
+        focus: true
+        Keys.onPressed: {
+            if(mainWindow.gameOver)
+                return
+            rex.currKeyPress = event.key
+            if (event.key === Qt.Key_Space || event.key === Qt.Key_Up) {
+                console.log("jump key press")
+                rex.rexStatus = "jump"
+            } else if (event.key === Qt.Key_Down && !event.isAutoRepeat) {
+                rex.rexStatus = "crouch"
+            }
+        }
 
-    //     Keys.onReleased: {
-    //         if (!mainWindow.gameOver && event.key === Qt.Key_Down) {
-    //             console.log("down key release")
-    //             rex.isRunning = true
-    //         }
-    //     }
+        Keys.onReleased: {
+            if(mainWindow.gameOver)
+                return
+            if (event.key === Qt.Key_Down && !event.isAutoRepeat) {
+                rex.currKeyPress = 0
+                rex.rexStatus = "run"
+            }
+        }
 
-    //     Component.onCompleted: {
-    //         console.log("Le jeu est chargé et prêt")
-    //     }
+        Component.onCompleted: {
+            console.log("Le jeu est chargé et prêt")
+        }
     }
 
     // Rectangle {
