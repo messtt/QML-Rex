@@ -16,9 +16,11 @@ Item {
 
     onRestartChanged: {
         if (restart) {
+            gameOver = false
             cloudModel.clear()
             cloudTimer.start()
             moveTimer.start()
+            restart = false
         }
     }
 

@@ -33,9 +33,11 @@ Item {
 
     onRestartChanged: {
         if (restart) {
+            gameOver = false
             cactusModel.clear()
             cactusMoveTimer.start()
             cactusSpawnTimer.start()
+            restart = false
         }
     }
 

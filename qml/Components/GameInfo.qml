@@ -47,8 +47,12 @@ Rectangle {
     onRestartChanged: {
         console.log("end")
         if (gameOver) {
-            timer.stop()
-            saveScore(timeElapsed)
+            gameOver = false
+            timer.start()
+            currScore = "00000"
+            multiplier = 0
+            timeElapsed = 0
+            restart = false
         }
     }
 

@@ -14,6 +14,16 @@ Rectangle {
     property bool gameOver: false
     property bool restart: false
 
+    onRestartChanged: {
+        if (restart) {
+            gameOver = false
+            currKeyPress = 0
+            image.jumpTo("run");
+            rexStatus = "run"
+            restart = false
+        }
+    }
+
     onGameOverChanged: {
         if (gameOver) {
             rexJumpUpTimer.stop()

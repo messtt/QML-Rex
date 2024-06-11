@@ -11,7 +11,9 @@ Item {
 
     onRestartChanged: {
         if (restart) {
+            gameOver = false
             moveTimer.start()
+            multiplier = 2
             restart = false
         }
     }

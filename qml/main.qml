@@ -12,6 +12,7 @@ Window {
     title: "QML-Rex"
 
     property bool gameOver: false
+    property bool restart: false
 
     function checkCollision(r1, r2x, r2y, r2width, r2height)
     {
@@ -19,6 +20,19 @@ Window {
                  r1.x + r1.width < r2x ||
                  r1.y > r2y + r2height ||
                  r1.y + r1.height < r2y);
+    }
+
+    onRestartChanged: {
+        if (!restart)
+            return
+        console.log("game restart")
+        cloud.restart = true
+        roof.restart = true
+        cactus.restart = true
+        rex.restart = true
+        gameInfo.restart = true
+        gameOver = false
+        restart = false
     }
 
     onGameOverChanged: {
@@ -128,7 +142,7 @@ Window {
             anchors.fill: parent
 
             Image {
-                id: restart
+                id: restartImage
                 height: 70
                 width: 75
                 anchors.centerIn: parent
@@ -137,6 +151,7 @@ Window {
 
             onClicked: {
                 console.log("Restart image clicked")
+                restart = true
             }
         }
     }
