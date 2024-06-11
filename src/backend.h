@@ -11,23 +11,14 @@
 class BackEnd : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
     QML_ELEMENT
 
 public:
     explicit BackEnd(QObject *parent = nullptr);
     Q_INVOKABLE bool writeToFile(const QString &filePath, const QString &text);
+    Q_INVOKABLE QString readInFile(const QString &filePath);
     Q_INVOKABLE bool checkCollision(const QString &image1Path, const QPointF &pos1,
     QString image2Path, const QPointF &pos2);
-    Q_INVOKABLE bool test();
-    QString userName();
-    void setUserName(const QString &userName);
-
-signals:
-    void userNameChanged();
-
-private:
-    QString m_userName;
 };
 
 #endif // BACKEND_H

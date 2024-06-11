@@ -6,7 +6,15 @@ Item {
     width: parent.width
     height: parent.height
     property bool gameOver: false
+    property bool restart: false
     property int multiplier: 2
+
+    onRestartChanged: {
+        if (restart) {
+            moveTimer.start()
+            restart = false
+        }
+    }
 
     onGameOverChanged: {
         if (gameOver) {

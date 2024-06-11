@@ -1,5 +1,6 @@
 #include "backend.h"
 #include <iostream>
+#include <fstream>
 
 BackEnd::BackEnd(QObject *parent) :
     QObject(parent)
@@ -7,26 +8,24 @@ BackEnd::BackEnd(QObject *parent) :
     std::cout << "Backend created" << std::endl;
 }
 
-Q_INVOKABLE bool BackEnd::test() {
-    std::cout << "function has been call" << std::endl;
-    return true;
-}
-
-QString BackEnd::userName()
+Q_INVOKABLE QString BackEnd::readInFile(const QString &filePath)
 {
-    return m_userName;
+    std::ifstream file(filePath.toStdString());
+    std::string firstLine;
+
+    if (file.is_open()) {
+        std::getline(file, firstLine);
+        file.close();
+    } else {
+        qDebug() << "Erreur : Impossible d'ouvrir le fichier" << filePath;
+        return QString();
+    }
+
+    return QString::fromStdString(firstLine);
 }
 
-void BackEnd::setUserName(const QString &userName)
+Q_INVOKABLE bool BackEnd::writeToFile(const QString &filePath, const QString &text)
 {
-    if (userName == m_userName)
-        return;
-
-    m_userName = userName;
-    emit userNameChanged();
-}
-
-Q_INVOKABLE bool BackEnd::writeToFile(const QString &filePath, const QString &text) {
     QFile file(filePath);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream out(&file);
@@ -50,7 +49,7 @@ QString image2Path, const QPointF &pos2)
         std::cout << "ERROR in image" << std::endl;
         return false;
     }
-    std::cout << "image" << std::endl;
+
     QRectF rect1(pos1, QSizeF(image1.width(), image1.height()));
     QRectF rect2(pos2, QSizeF(image2.width(), image2.height()));
 

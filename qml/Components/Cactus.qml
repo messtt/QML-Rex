@@ -6,6 +6,7 @@ Item {
     width: parent.width
     height: parent.height
 
+    property bool restart: false
     property bool gameOver: false
     property int multiplier: 2
     property int numberOfCactus: 0
@@ -28,6 +29,14 @@ Item {
         ];
         var index = Math.floor(Math.random() * images.length);
         return images[index];
+    }
+
+    onRestartChanged: {
+        if (restart) {
+            cactusModel.clear()
+            cactusMoveTimer.start()
+            cactusSpawnTimer.start()
+        }
     }
 
     onGameOverChanged: {

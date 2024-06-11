@@ -2,15 +2,25 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Item {
+    id: cloudItem
     width: parent.width
     height: parent.height
+
+    property int cloudCount: 0
+    property bool gameOver: false
+    property bool restart: false
 
     function randomY(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    property int cloudCount: 0
-    property bool gameOver: false
+    onRestartChanged: {
+        if (restart) {
+            cloudModel.clear()
+            cloudTimer.start()
+            moveTimer.start()
+        }
+    }
 
     onGameOverChanged: {
         if (gameOver) {

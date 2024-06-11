@@ -8,12 +8,34 @@ Rectangle {
     color: "transparent"
 
     property int timeElapsed: 0
+    property int highScore: 0
     property int multiplier: 0
     property bool gameOver: false
+    property bool restart: false
+
+    function getHighScore() {
+
+    }
+
+    function saveScore(score)
+    {
+        if (highScore > score) {
+            return
+        }
+        var newScore = Qt.qsTr(score)
+        backend.writeToFile(":/save/save.txt", newScore)
+    }
 
     FontLoader {
         id: rexFont
         source: "qrc:/assets/Press_Start_2P/PressStart2P-Regular.ttf"
+    }
+
+    onRestartChanged: {
+        if (gameOver) {
+            saveScore(timeElapsed)
+            timer.stop()
+        }
     }
 
     onMultiplierChanged: {

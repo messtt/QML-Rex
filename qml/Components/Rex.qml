@@ -12,6 +12,7 @@ Rectangle {
     property string rexStatus: "run"
     property int currKeyPress: 0
     property bool gameOver: false
+    property bool restart: false
 
     onGameOverChanged: {
         if (gameOver) {

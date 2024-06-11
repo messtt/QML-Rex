@@ -16,8 +16,6 @@ QML_IMPORT_PATH = src/
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =
 
-QML_IMPORT_NAME = io.qt.examples.backend
-
 QML_IMPORT_MAJOR_VERSION = 1
 
 # The following define makes your compiler emit warnings if you use
