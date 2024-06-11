@@ -43,9 +43,6 @@ Window {
             var lastCactus = cactus.last;
             var rexPos = Qt.point(rex.x, rex.y);
             var cactusPos = Qt.point(lastCactus.x, lastCactus.y);
-            console.log("Cactus pos x: " + lastCactus.x, " y: " + lastCactus.y);
-            console.log("Rex pos x: " + rexPos.x + " y: " + rexPos.y);
-            console.log("Last Cactus source: " + lastCactus.source);
             if (checkCollision(rex, lastCactus.x, lastCactus.y, lastCactus.width, lastCactus.height) === false) {
                 return
             }

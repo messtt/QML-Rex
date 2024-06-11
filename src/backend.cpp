@@ -1,6 +1,9 @@
 #include "backend.h"
 #include <iostream>
 #include <fstream>
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
 
 BackEnd::BackEnd(QObject *parent) :
     QObject(parent)
@@ -10,30 +13,30 @@ BackEnd::BackEnd(QObject *parent) :
 
 Q_INVOKABLE QString BackEnd::readInFile(const QString &filePath)
 {
-    std::ifstream file(filePath.toStdString());
-    std::string firstLine;
-
-    if (file.is_open()) {
-        std::getline(file, firstLine);
-        file.close();
-    } else {
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Erreur : Impossible d'ouvrir le fichier" << filePath;
         return QString();
     }
 
-    return QString::fromStdString(firstLine);
+    QTextStream in(&file);
+    QString firstLine = in.readLine();
+    file.close();
+    return firstLine;
 }
 
 Q_INVOKABLE bool BackEnd::writeToFile(const QString &filePath, const QString &text)
 {
     QFile file(filePath);
-    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QTextStream out(&file);
-        out << text;
-        file.close();
-        return true;
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "ERROR: Unable to open file for writing:" << filePath;
+        return false;
     }
-    return false;
+
+    QTextStream out(&file);
+    out << text;
+    file.close();
+    return true;
 }
 
 Q_INVOKABLE bool BackEnd::checkCollision(const QString &image1Path, const QPointF &pos1,
