@@ -20,6 +20,9 @@
         <file>assets/rex.png</file>
         <file>assets/Press_Start_2P/PressStart2P-Regular.ttf</file>
         <file>save/save.txt</file>
+        <file>sounds/die.mp3</file>
+        <file>sounds/jump.mp3</file>
+        <file>sounds/point.mp3</file>
     </qresource>
 </RCC>
 

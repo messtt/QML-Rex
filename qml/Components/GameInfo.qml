@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtMultimedia 5.15
 
 Rectangle {
     id: gameInfos
@@ -33,6 +34,11 @@ Rectangle {
         console.log("Score saved")
         var newScore = score.toString();
         backend.writeToFile(":/save/save.txt", newScore);
+    }
+
+    Audio {
+        id: pointAudio
+        source: "qrc:/sounds/point.mp3"
     }
 
     FontLoader {
@@ -78,6 +84,9 @@ Rectangle {
         repeat: true
         onTriggered: {
             gameInfos.timeElapsed += 1
+            if (gameInfos.timeElapsed % 100 === 0) {
+                pointAudio.play()
+            }
         }
     }
 

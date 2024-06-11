@@ -1,4 +1,5 @@
 QT += qml quick
+QT += multimedia
 
 CONFIG += c++11
 # CONFIG += qmltypes

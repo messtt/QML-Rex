@@ -1,5 +1,6 @@
 import QtQuick 2.5
 import QtQuick.Window 2.5
+import QtMultimedia 5.15
 import QtQuick.Controls 2.15
 
 import "Components"
@@ -33,6 +34,7 @@ Window {
         gameInfo.restart = true
         gameOver = false
         restart = false
+        colisionCheckTimer.start()
     }
 
     onGameOverChanged: {
@@ -43,6 +45,17 @@ Window {
         cactus.gameOver = true
         rex.gameOver = true
         gameInfo.gameOver = true
+        colisionCheckTimer.stop()
+    }
+
+    Audio {
+        id: jumpAudio
+        source: "qrc:/sounds/jump.mp3"
+    }
+
+    Audio {
+        id: dieAudio
+        source: "qrc:/sounds/die.mp3"
     }
 
     Timer {
@@ -62,6 +75,7 @@ Window {
             }
             var result = backend.checkCollision(":/assets/rex.png", rexPos, lastCactus.source, cactusPos);
             if (result) {
+                dieAudio.play()
                 gameOver = true;
             }
         }
@@ -104,6 +118,7 @@ Window {
             if (event.key === Qt.Key_Space || event.key === Qt.Key_Up) {
                 console.log("jump key press")
                 rex.rexStatus = "jump"
+                jumpAudio.play()
             } else if (event.key === Qt.Key_Down && !event.isAutoRepeat) {
                 rex.rexStatus = "crouch"
             }
