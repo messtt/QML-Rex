@@ -5,9 +5,7 @@ Rectangle {
     id: rexRectangle
     width: 55
     height: 60
-    color: "blue"
-
-    // color: "transparent"
+    color: "transparent"
     x: 20
     y: game.height - height - 25
 
@@ -166,12 +164,12 @@ Rectangle {
         Sprite {
             id: rexDieSprite
             name: "dead"
-            source: "qrc:/assets/offline-sprite-2x.png"
+            source: "qrc:/assets/rex.png"
             frameCount: 1
             frameDuration: 100
-            frameWidth: 88
-            frameHeight: 97
-            frameX: 1690
+            frameWidth: 55
+            frameHeight: 63
+            frameX: 0
             frameY: 0
         }
         Sprite {

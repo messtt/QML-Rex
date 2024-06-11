@@ -13,6 +13,14 @@ Window {
 
     property bool gameOver: false
 
+    function checkCollision(r1, r2x, r2y, r2width, r2height)
+    {
+        return !(r1.x > r2x + r2width ||
+                 r1.x + r1.width < r2x ||
+                 r1.y > r2y + r2height ||
+                 r1.y + r1.height < r2y);
+    }
+
     onGameOverChanged: {
         if (!gameOver)
             return
@@ -25,20 +33,25 @@ Window {
 
     Timer {
         id: colisionCheckTimer
-        interval: 10
+        interval: 30
         running: true
         repeat: true
         onTriggered: {
-            if (cactus.numberOfCactus > 0) {
-                var lastCactus = cactus.last;
-                var rexPos = Qt.point(rex.x, rex.y);
-                var CactusPos = Qt.point(lastCactus.x, lastCactus.y);
-                console.log("Cactus pos x: " + lastCactus.x, " y: " + lastCactus.y)
-                console.log("Rex pos x: " + rexPos.x + " y: " + rexPos.y)
-                console.log("Last Cactus source: " + lastCactus.source)
-                var result = backend.checkCollision(":/assets/rex.png", rexPos, lastCactus.source, CactusPos);
-                if (result)
-                    gameOver = true
+            if (cactus.numberOfCactus <= 0) {
+                return
+            }
+            var lastCactus = cactus.last;
+            var rexPos = Qt.point(rex.x, rex.y);
+            var cactusPos = Qt.point(lastCactus.x, lastCactus.y);
+            console.log("Cactus pos x: " + lastCactus.x, " y: " + lastCactus.y);
+            console.log("Rex pos x: " + rexPos.x + " y: " + rexPos.y);
+            console.log("Last Cactus source: " + lastCactus.source);
+            if (checkCollision(rex, lastCactus.x, lastCactus.y, lastCactus.width, lastCactus.height) === false) {
+                return
+            }
+            var result = backend.checkCollision(":/assets/rex.png", rexPos, lastCactus.source, cactusPos);
+            if (result) {
+                gameOver = true;
             }
         }
     }

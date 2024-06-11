@@ -38,49 +38,34 @@ Q_INVOKABLE bool BackEnd::writeToFile(const QString &filePath, const QString &te
 }
 
 Q_INVOKABLE bool BackEnd::checkCollision(const QString &image1Path, const QPointF &pos1,
-                                         QString image2Path, const QPointF &pos2) {
+QString image2Path, const QPointF &pos2)
+{
     std::string cactusPath = image2Path.toStdString();
     cactusPath = cactusPath.erase(0, 4);
     cactusPath = ":" + cactusPath;
     QImage image1(image1Path);
     QImage image2(cactusPath.c_str());
-    if (image1.isNull()) {
-        std::cout << "ERROR in image2" << std::endl;
+
+    if (image1.isNull() || image2.isNull()) {
+        std::cout << "ERROR in image" << std::endl;
         return false;
     }
-    if (image2.isNull()) {
-        std::cout << "ERROR in image1" << std::endl;
-        return false;
-    }
-    QRect rect1(pos1.toPoint(), image1.size());
-    QRect rect2(pos2.toPoint(), image2.size());
+    std::cout << "image" << std::endl;
+    QRectF rect1(pos1, QSizeF(image1.width(), image1.height()));
+    QRectF rect2(pos2, QSizeF(image2.width(), image2.height()));
 
-    // Intersection des deux rectangles
-    QRect intersection = rect1.intersected(rect2);
-
-    // Vérifie s'il y a une intersection
-    if (intersection.isEmpty()) {
-        return false;
-    }
-
-    // Parcourt la zone d'intersection pour vérifier les pixels colorés
-    for (int y = intersection.top(); y <= intersection.bottom(); ++y) {
-        for (int x = intersection.left(); x <= intersection.right(); ++x) {
-            // Convertit les coordonnées en coordonnées locales à chaque image
-            QPoint p1 = QPoint(x - pos1.x(), y - pos1.y());
-            QPoint p2 = QPoint(x - pos2.x(), y - pos2.y());
-
-            // Vérifie si les pixels sont colorés dans les deux images
-            if (image1.valid(p1) && image2.valid(p2) &&
-                image1.pixelColor(p1).alpha() > 0 &&
-                image2.pixelColor(p2).alpha() > 0) {
-                std::cout << "Collision" << std::endl;
-                return true;
+    if (rect1.intersects(rect2)) {
+        QRectF intersection = rect1.intersected(rect2);
+        for (int x = intersection.x(); x < intersection.x() + intersection.width(); ++x) {
+            for (int y = intersection.y(); y < intersection.y() + intersection.height(); ++y) {
+                if (image1.pixelColor(x - rect1.x(), y - rect1.y()) != QColor(Qt::transparent) &&
+                    image1.pixelColor(x - rect1.x(), y - rect1.y()) != QColor(Qt::white) &&
+                    image2.pixelColor(x - rect2.x(), y - rect2.y()) != QColor(Qt::transparent) &&
+                    image2.pixelColor(x - rect2.x(), y - rect2.y()) != QColor(Qt::white)) {
+                    return true;
+                }
             }
         }
     }
-
-    // Pas de collision détectée
     return false;
 }
-
