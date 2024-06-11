@@ -3,7 +3,6 @@ import QtQuick.Window 2.5
 import QtQuick.Controls 2.15
 
 import "Components"
-import backend 1.0
 
 Window {
     id: mainWindow
@@ -12,47 +11,37 @@ Window {
     height: 300
     title: "QML-Rex"
 
-    // property int timeSpend: 0
-    // property bool gameOver: false
+    property bool gameOver: false
 
-    // function checkCollision(r1, r2)
-    // {
-    //     return !(r1.x + r1.width < r2.x || r2.x + r2.width < r1.x || r1.y + (r1.height / 1.5) < r2.y || r2.y + (r2.height / 3) < r1.y);
-    // }
+    onGameOverChanged: {
+        if (!gameOver)
+            return
+        cloud.gameOver = true
+        roof.gameOver = true
+        cactus.gameOver = true
+        rex.gameOver = true
+        gameInfo.gameOver = true
+    }
 
-    // onGameOverChanged: {
-    //     BackEnd.writeToFile("qrc:Save/save.txt", gameInfo.timeElapsed)
-    // }
-
-    // Timer {
-    //     id: gameTime
-    //     interval: 300
-    //     running: true
-    //     repeat: true
-    //     onTriggered: {
-    //         mainWindow.timeSpend += 1
-    //         gameInfo.multiplier += 1
-    //     }
-    // }
-
-    // Timer {
-    //     id: colisionCheck
-    //     interval: 10
-    //     running: true
-    //     repeat: true
-    //     onTriggered: {
-    //         if (checkCollision(rex, cactus) === true) {
-    //             mainWindow.gameOver = true
-    //             roof.isOver = true
-    //             cactus.isOver = true
-    //             rex.isOver = true
-    //             gameInfo.isOver = true
-    //             gameTime.running = false
-    //             gameTime.stop()
-    //             gameTime.repeat = false
-    //         }
-    //     }
-    // }
+    Timer {
+        id: colisionCheckTimer
+        interval: 10
+        running: true
+        repeat: true
+        onTriggered: {
+            if (cactus.numberOfCactus > 0) {
+                var lastCactus = cactus.last;
+                var rexPos = Qt.point(rex.x, rex.y);
+                var CactusPos = Qt.point(lastCactus.x, lastCactus.y);
+                console.log("Cactus pos x: " + lastCactus.x, " y: " + lastCactus.y)
+                console.log("Rex pos x: " + rexPos.x + " y: " + rexPos.y)
+                console.log("Last Cactus source: " + lastCactus.source)
+                var result = backend.checkCollision(":/assets/rex.png", rexPos, lastCactus.source, CactusPos);
+                if (result)
+                    gameOver = true
+            }
+        }
+    }
 
     Rectangle {
         id: game
@@ -79,9 +68,9 @@ Window {
             id: rex
         }
 
-        // GameInfo {
-        //     id: gameInfo
-        // }
+        GameInfo {
+            id: gameInfo
+        }
 
         focus: true
         Keys.onPressed: {
@@ -110,35 +99,35 @@ Window {
         }
     }
 
-    // Rectangle {
-    //     id: endGame
-    //     width: 300
-    //     height: 200
-    //     anchors.centerIn: game
-    //     visible: mainWindow.gameOver ? true : false
-    //     Image {
-    //         id: gameOverText
-    //         height: 20
-    //         width: parent.width
-    //         anchors.fill: parent.Center
-    //         source: "../assets/game_over.png"
-    //     }
-    //     MouseArea {
-    //         id: restartMouseArea
-    //         anchors.fill: parent
+    Rectangle {
+        id: endGame
+        width: 300
+        height: 200
+        color: "transparent"
+        anchors.centerIn: game
+        visible: mainWindow.gameOver
+        Image {
+            id: gameOverText
+            height: 20
+            width: parent.width
+            anchors.fill: parent.Center
+            source: "qrc:/assets/game_over.png"
+        }
+        MouseArea {
+            id: restartMouseArea
+            anchors.fill: parent
 
-    //         Image {
-    //             id: restart
-    //             height: 70
-    //             width: 80
-    //             anchors.centerIn: parent
-    //             source: "../assets/restart.png"
-    //         }
+            Image {
+                id: restart
+                height: 70
+                width: 75
+                anchors.centerIn: parent
+                source: "qrc:/assets/restart.png"
+            }
 
-    //         onClicked: {
-    //             console.log("Restart image clicked")
-    //         }
-    //     }
-    // }
+            onClicked: {
+                console.log("Restart image clicked")
+            }
+        }
+    }
 }
-

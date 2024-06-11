@@ -17,6 +17,8 @@
         <file>assets/cloud.png</file>
         <file>assets/restart.png</file>
         <file>assets/game_over.png</file>
+        <file>assets/rex.png</file>
+        <file>assets/Press_Start_2P/PressStart2P-Regular.ttf</file>
     </qresource>
 </RCC>
 

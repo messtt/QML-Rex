@@ -18,7 +18,8 @@ public:
     explicit BackEnd(QObject *parent = nullptr);
     Q_INVOKABLE bool writeToFile(const QString &filePath, const QString &text);
     Q_INVOKABLE bool checkCollision(const QString &image1Path, const QPointF &pos1,
-                                    const QString &image2Path, const QPointF &pos2);
+                                    QString image2Path, const QPointF &pos2);
+    Q_INVOKABLE bool test();
     QString userName();
     void setUserName(const QString &userName);
 

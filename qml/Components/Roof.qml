@@ -5,8 +5,14 @@ Item {
     id: roofItem
     width: parent.width
     height: parent.height
-    property bool isOver: false
+    property bool gameOver: false
     property int multiplier: 2
+
+    onGameOverChanged: {
+        if (gameOver) {
+            moveTimer.stop()
+        }
+    }
 
     Timer {
         id: moveTimer
@@ -45,7 +51,7 @@ Item {
 
         delegate: Image {
             id: roofImage
-            source: "../../assets/roof.png"
+            source: "qrc:/assets/roof.png"
             sourceSize.width: 2404
             sourceSize.height: 28
             width: 2404

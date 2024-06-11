@@ -5,13 +5,25 @@ Rectangle {
     id: rexRectangle
     width: 55
     height: 60
+    color: "blue"
 
-    color: "transparent"
+    // color: "transparent"
     x: 20
     y: game.height - height - 25
 
     property string rexStatus: "run"
     property int currKeyPress: 0
+    property bool gameOver: false
+
+    onGameOverChanged: {
+        if (gameOver) {
+            rexJumpUpTimer.stop()
+            rexJumpDownTimer.stop()
+            speedDown.stop()
+            image.jumpTo("dead");
+            rexStatus = "dead"
+        }
+    }
 
     Timer {
         id: rexJumpUpTimer
@@ -132,7 +144,7 @@ Rectangle {
         Sprite {
             id: rexRunSprite
             name: "run"
-            source: "../../assets/offline-sprite-2x.png"
+            source: "qrc:/assets/offline-sprite-2x.png"
             frameCount: 2
             frameDuration: 100
             frameWidth: 88
@@ -143,7 +155,7 @@ Rectangle {
         Sprite {
             id: rexCrouchSprite
             name: "crouch"
-            source: "../../assets/offline-sprite-2x.png"
+            source: "qrc:/assets/offline-sprite-2x.png"
             frameCount: 2
             frameDuration: 100
             frameWidth: 118
@@ -153,8 +165,8 @@ Rectangle {
         }
         Sprite {
             id: rexDieSprite
-            name: "die"
-            source: "../../assets/offline-sprite-2x.png"
+            name: "dead"
+            source: "qrc:/assets/offline-sprite-2x.png"
             frameCount: 1
             frameDuration: 100
             frameWidth: 88
@@ -165,7 +177,7 @@ Rectangle {
         Sprite {
             id: rexJumpSprite
             name: "jump"
-            source: "../../assets/offline-sprite-2x.png"
+            source: "qrc:/assets/offline-sprite-2x.png"
             frameCount: 1
             frameDuration: 100
             frameWidth: 86

@@ -6,8 +6,10 @@ Item {
     width: parent.width
     height: parent.height
 
-    property bool isOver: false
+    property bool gameOver: false
     property int multiplier: 2
+    property int numberOfCactus: 0
+    property var last: cactusModel.get(0)
 
     function randomCactusSpawn(max) {
         let rand = Math.floor(Math.random() * (max + 1));
@@ -19,13 +21,20 @@ Item {
 
     function randomCactusImage() {
         var images = [
-            ["../../assets/two_cactus.png", 60, 70],
-            ["../../assets/four_cactus.png", 90, 70],
-            ["../../assets/three_cactus.png", 80, 70],
-            ["../../assets/two_cactus_small.png", 40, 50],
+            ["qrc:/assets/two_cactus.png", 60, 70],
+            ["qrc:/assets/four_cactus.png", 90, 70],
+            ["qrc:/assets/three_cactus.png", 80, 70],
+            ["qrc:/assets/two_cactus_small.png", 40, 50],
         ];
         var index = Math.floor(Math.random() * images.length);
         return images[index];
+    }
+
+    onGameOverChanged: {
+        if (gameOver) {
+            cactusMoveTimer.stop()
+            cactusSpawnTimer.stop()
+        }
     }
 
     Timer {
@@ -38,6 +47,8 @@ Item {
                 let cactus = cactusModel.get(i);
                 if (cactus.x < -cactus.width) {
                     cactusModel.remove(i);
+                    numberOfCactus = cactusModel.count
+                    last = cactusModel.get(0)
                 } else {
                     cactus.x -= 1 * multiplier;
                     cactusModel.set(i, cactus);
@@ -65,6 +76,8 @@ Item {
                     x: cactusItem.width,
                     y: cactusItem.height - cactusInfo[2] - 20
                 });
+                numberOfCactus = cactusModel.count
+                last = cactusModel.get(0)
             }
         }
     }

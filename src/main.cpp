@@ -6,8 +6,9 @@
 int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
+    BackEnd backend;
 
-    qmlRegisterType<BackEnd>("backend", 1, 0, "BackEnd");
+    engine.rootContext()->setContextProperty("backend", &backend);
 
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())

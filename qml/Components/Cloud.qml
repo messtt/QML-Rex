@@ -10,6 +10,14 @@ Item {
     }
 
     property int cloudCount: 0
+    property bool gameOver: false
+
+    onGameOverChanged: {
+        if (gameOver) {
+            cloudTimer.stop()
+            moveTimer.stop()
+        }
+    }
 
     Timer {
         id: cloudTimer
@@ -59,7 +67,7 @@ Item {
         model: cloudModel
         delegate: Image {
             id: cloudImage
-            source: "../../assets/cloud.png"
+            source: "qrc:/assets/cloud.png"
             x: model.x
             y: model.y
             width: 80

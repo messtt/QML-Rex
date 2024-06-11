@@ -2,44 +2,68 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Rectangle {
-    height: 50
-    width: parent.width
-    color: "lightblue"
     id: gameInfos
+    height: 30
+    width: parent.width
+    color: "transparent"
+
     property int timeElapsed: 0
     property int multiplier: 0
-    property bool isOver: false
+    property bool gameOver: false
 
-    onMultiplierChanged: {
-        console.log("mult: " + multiplier)
-        console.log("interval: " + timer.interval)
-        if (timer.interval <= 50)
-            timer.interval = 50
-        else
-            timer.interval = 200 - multiplier
+    FontLoader {
+        id: rexFont
+        source: "qrc:/assets/Press_Start_2P/PressStart2P-Regular.ttf"
     }
 
-    onIsOverChanged: {
-        if (isOver) {
+    onMultiplierChanged: {
+        if (timer.interval <= 20)
+            timer.interval = 20
+        else
+            timer.interval = 100 - multiplier
+    }
+
+    onGameOverChanged: {
+        if (gameOver) {
             timer.stop()
         }
     }
 
     Timer {
         id: timer
-        interval: 200
-        running: !isOver
-        repeat: !isOver
+        interval: 100
+        running: true
+        repeat: true
         onTriggered: {
             gameInfos.timeElapsed += 1
         }
     }
 
-    Text {
-        id: timeText
+    Row {
         anchors.right: parent.right
-        text: gameInfos.timeElapsed
         anchors.verticalCenter: parent.verticalCenter
-        font.pixelSize: 24
+        spacing: 5
+
+        Text {
+            id: highScoreText
+            text: "HI 0 "
+            font.pixelSize: 16
+            font.family: rexFont.name
+            color: "#535353"
+        }
+
+        Text {
+            id: timeText
+            text: {
+                var score = gameInfos.timeElapsed.toString();
+                while (score.length < 5) {
+                    score = "0" + score;
+                }
+                score;
+            }
+            font.pixelSize: 16
+            font.family: rexFont.name
+            color: "#535353"
+        }
     }
 }
