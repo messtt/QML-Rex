@@ -9,7 +9,7 @@ Rectangle {
     color: "transparent"
 
     property int timeElapsed: 0
-    property string highScore: "0"
+    property string highScore: "00000"
     property string currScore: "00000"
     property int multiplier: 0
     property bool gameOver: false
@@ -31,9 +31,10 @@ Rectangle {
         if (high > timeElapsed) {
             return;
         }
-        console.log("Score saved")
+        highScore = score;
+        console.log("Score saved");
         var newScore = score.toString();
-        backend.writeToFile(":/save/save.txt", newScore);
+        backend.writeToFile("../../save/save.txt", newScore);
     }
 
     Audio {
@@ -47,12 +48,12 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        getHighScore()
+        getHighScore();
     }
 
     onRestartChanged: {
         console.log("end")
-        if (gameOver) {
+        if (restart) {
             gameOver = false
             timer.start()
             currScore = "00000"
@@ -100,7 +101,7 @@ Rectangle {
             text: "HI " + highScore
             font.pixelSize: 16
             font.family: rexFont.name
-            color: "#535353"
+            color: "#868686"
         }
 
         Text {

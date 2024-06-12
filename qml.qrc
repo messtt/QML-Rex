@@ -18,6 +18,8 @@
         <file>assets/restart.png</file>
         <file>assets/game_over.png</file>
         <file>assets/rex.png</file>
+        <file>assets/bird.png</file>
+        <file>assets/crouchingRex.png</file>
         <file>assets/Press_Start_2P/PressStart2P-Regular.ttf</file>
         <file>save/save.txt</file>
         <file>sounds/die.mp3</file>

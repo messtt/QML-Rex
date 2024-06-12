@@ -8,9 +8,7 @@ Item {
 
     property bool restart: false
     property bool gameOver: false
-    property int multiplier: 2
-    property int numberOfCactus: 0
-    property var last: cactusModel.get(0)
+    property real multiplier: 0.0
 
     function randomCactusSpawn(max) {
         let rand = Math.floor(Math.random() * (max + 1));
@@ -31,10 +29,16 @@ Item {
         return images[index];
     }
 
+    onMultiplierChanged: {
+        if (multiplier > 3)
+            multiplier = 3
+    }
+
     onRestartChanged: {
         if (restart) {
             gameOver = false
             cactusModel.clear()
+            multiplier = 0
             cactusMoveTimer.start()
             cactusSpawnTimer.start()
             restart = false
@@ -58,10 +62,9 @@ Item {
                 let cactus = cactusModel.get(i);
                 if (cactus.x < -cactus.width) {
                     cactusModel.remove(i);
-                    numberOfCactus = cactusModel.count
-                    last = cactusModel.get(0)
+                    game.firstCactus = cactusModel.get(0)
                 } else {
-                    cactus.x -= 1 * multiplier;
+                    cactus.x -= 2 + multiplier;
                     cactusModel.set(i, cactus);
                 }
             }
@@ -74,21 +77,23 @@ Item {
         interval: 400
         running: true
         onTriggered: {
-            var lastCactus;
-            if (cactusModel.count > 0) {
-                lastCactus = cactusModel.get(cactusModel.count - 1)
+            if (game.lastBird !== null) {
+                if (game.lastBird.x > mainWindow.width - 400) {
+                    return
+                }
             }
-            if (cactusModel.count <= 0 || randomCactusSpawn(1) === true && lastCactus.x < mainWindow.width / 1.5) {
+            if (cactusModel.count <= 0 || randomCactusSpawn(2) === true && game.lastCactus.x < mainWindow.width - 300) {
                 var cactusInfo = randomCactusImage();
                 cactusModel.append({
+                    name: "cactus",
                     source: cactusInfo[0],
                     width: cactusInfo[1],
                     height: cactusInfo[2],
                     x: cactusItem.width,
                     y: cactusItem.height - cactusInfo[2] - 20
                 });
-                numberOfCactus = cactusModel.count
-                last = cactusModel.get(0)
+                game.lastCactus = cactusModel.get(cactusModel.count - 1)
+                game.firstCactus = cactusModel.get(0)
             }
         }
     }

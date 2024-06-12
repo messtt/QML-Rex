@@ -27,15 +27,17 @@ Q_INVOKABLE QString BackEnd::readInFile(const QString &filePath)
 
 Q_INVOKABLE bool BackEnd::writeToFile(const QString &filePath, const QString &text)
 {
-    QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "ERROR: Unable to open file for writing:" << filePath;
-        return false;
-    }
+    (void)filePath;
+    std::string str = "../../save/save.txt";
+    std::ofstream fichier(str);
+    if (fichier.is_open()) {
+        fichier << text.toStdString();
+        fichier.close();
 
-    QTextStream out(&file);
-    out << text;
-    file.close();
+        std::cout << "Le texte a été enregistré dans le fichier " << std::endl;
+    } else {
+        std::cerr << "Erreur: Impossible d'ouvrir le fichier " << std::endl;
+    }
     return true;
 }
 
@@ -45,6 +47,7 @@ QString image2Path, const QPointF &pos2)
     std::string cactusPath = image2Path.toStdString();
     cactusPath = cactusPath.erase(0, 4);
     cactusPath = ":" + cactusPath;
+    std::cout << "cactusPath: " << cactusPath << std::endl;
     QImage image1(image1Path);
     QImage image2(cactusPath.c_str());
 

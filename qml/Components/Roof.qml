@@ -7,13 +7,18 @@ Item {
     height: parent.height
     property bool gameOver: false
     property bool restart: false
-    property int multiplier: 2
+    property real multiplier: 0.0
+
+    onMultiplierChanged: {
+        if (multiplier > 3)
+            multiplier = 3
+    }
 
     onRestartChanged: {
         if (restart) {
             gameOver = false
             moveTimer.start()
-            multiplier = 2
+            multiplier = 0
             restart = false
         }
     }
@@ -32,7 +37,7 @@ Item {
         onTriggered: {
             for (var i = 0; i < roofModel.count; i++) {
                 var roof = roofModel.get(i);
-                roof.x -= 1 * multiplier
+                roof.x -= 2 + multiplier
                 if (roof.x < -2404) {
                     roof.x = 2404;
                 }

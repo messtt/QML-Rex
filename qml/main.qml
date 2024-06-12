@@ -17,9 +17,10 @@ Window {
 
     function checkCollision(r1, r2x, r2y, r2width, r2height)
     {
+        var rexY = rex.rexStatus === "crouch" ? rex.y + 20 : rex.y
         return !(r1.x > r2x + r2width ||
                  r1.x + r1.width < r2x ||
-                 r1.y > r2y + r2height ||
+                 rexY > r2y + r2height ||
                  r1.y + r1.height < r2y);
     }
 
@@ -27,12 +28,17 @@ Window {
         if (!restart)
             return
         console.log("game restart")
+        game.firstBird = null
+        game.firstCactus = null
+        game.lastBird = null
+        game.lastCactus = null
         cloud.restart = true
         roof.restart = true
         cactus.restart = true
         rex.restart = true
         gameInfo.restart = true
         gameOver = false
+        bird.restart = true
         restart = false
         colisionCheckTimer.start()
     }
@@ -46,6 +52,7 @@ Window {
         rex.gameOver = true
         gameInfo.gameOver = true
         colisionCheckTimer.stop()
+        bird.gameOver = true
     }
 
     Audio {
@@ -59,21 +66,45 @@ Window {
     }
 
     Timer {
+        id: globalTimer
+        interval: 4000
+        repeat: true
+        running: true
+        onTriggered: {
+            cactus.multiplier += 0.1
+            roof.multiplier += 0.1
+            bird.multiplier += 0.1
+            gameInfo.multiplier += 5
+        }
+    }
+
+    Timer {
         id: colisionCheckTimer
-        interval: 30
+        interval: 1
         running: true
         repeat: true
         onTriggered: {
-            if (cactus.numberOfCactus <= 0) {
+            if (game.firstBird === null && game.firstCactus === null) {
                 return
             }
-            var lastCactus = cactus.last;
             var rexPos = Qt.point(rex.x, rex.y);
-            var cactusPos = Qt.point(lastCactus.x, lastCactus.y);
-            if (checkCollision(rex, lastCactus.x, lastCactus.y, lastCactus.width, lastCactus.height) === false) {
+            var firstObstacle = null;
+            if (game.firstBird === null) {
+                firstObstacle = game.firstCactus
+            } else if (game.firstCactus === null) {
+                firstObstacle = game.firstBird
+            } else if (game.firstBird.x < game.firstCactus.x) {
+                firstObstacle = game.firstBird
+            } else {
+                firstObstacle = game.firstCactus
+            }
+
+            var obstaclePos = Qt.point(firstObstacle.x, firstObstacle.y);
+            if (checkCollision(rex, firstObstacle.x, firstObstacle.y, firstObstacle.width, firstObstacle.height) === false) {
                 return
             }
-            var result = backend.checkCollision(":/assets/rex.png", rexPos, lastCactus.source, cactusPos);
+            console.log("collision!!!")
+            var result = backend.checkCollision(":/assets/rex.png", rexPos, firstObstacle.source, obstaclePos);
             if (result) {
                 dieAudio.play()
                 gameOver = true;
@@ -90,12 +121,22 @@ Window {
         border.color: "black"
         border.width: 1
 
+        property var lastBird: null
+        property var firstBird: null
+
+        property var lastCactus: null
+        property var firstCactus: null
+
         Cloud {
             id: cloud
         }
 
         Roof {
             id: roof
+        }
+
+        Bird {
+            id: bird
         }
 
         Cactus {
