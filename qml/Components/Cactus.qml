@@ -20,10 +20,12 @@ Item {
 
     function randomCactusImage() {
         var images = [
-            ["qrc:/assets/two_cactus.png", 60, 61],
-            ["qrc:/assets/four_cactus.png", 90, 59],
-            ["qrc:/assets/three_cactus.png", 80, 78],
-            ["qrc:/assets/two_cactus_small.png", 40, 40],
+            ["qrc:/assets/cactus/one_cactus.png", 37, 75],
+            ["qrc:/assets/cactus/one_cactus_small.png", 20, 40],
+            ["qrc:/assets/cactus/two_cactus.png", 75, 75],
+            ["qrc:/assets/cactus/two_cactus_small.png", 40, 40],
+            ["qrc:/assets/cactus/three_cactus.png", 113, 75],
+            ["qrc:/assets/cactus/three_cactus_small.png", 57, 40],
         ];
         var index = Math.floor(Math.random() * images.length);
         return images[index];

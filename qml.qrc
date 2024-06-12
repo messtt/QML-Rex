@@ -7,24 +7,31 @@
         <file>qml/Components/Bird.qml</file>
         <file>qml/Components/Rex.qml</file>
         <file>qml/Components/Cloud.qml</file>
-        <file>assets/offline-sprite-1x.png</file>
+
         <file>assets/offline-sprite-2x.png</file>
-        <file>assets/two_cactus.png</file>
-        <file>assets/four_cactus.png</file>
-        <file>assets/three_cactus.png</file>
-        <file>assets/two_cactus_small.png</file>
+
+        <file>assets/cactus/one_cactus.png</file>
+        <file>assets/cactus/one_cactus_small.png</file>
+        <file>assets/cactus/two_cactus.png</file>
+        <file>assets/cactus/two_cactus_small.png</file>
+        <file>assets/cactus/three_cactus.png</file>
+        <file>assets/cactus/three_cactus_small.png</file>
+
         <file>assets/roof.png</file>
         <file>assets/cloud.png</file>
         <file>assets/restart.png</file>
         <file>assets/game_over.png</file>
         <file>assets/rex.png</file>
         <file>assets/bird.png</file>
-        <file>assets/crouchingRex.png</file>
+
         <file>assets/Press_Start_2P/PressStart2P-Regular.ttf</file>
+
         <file>save/save.txt</file>
+
         <file>sounds/die.mp3</file>
         <file>sounds/jump.mp3</file>
         <file>sounds/point.mp3</file>
+
     </qresource>
 </RCC>
 
