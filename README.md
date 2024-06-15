@@ -1,7 +1,7 @@
  
 # Jeu du T-Rex en QML/C++
 
-Bienvenue dans le jeu du T-Rex en QML/C++ ! Ce projet est une réimplémentation du célèbre jeu du dinosaure de Google Chrome, développé en utilisant le langage QML pour l'interface utilisateur et C++ pour la logique du jeu.
+Bienvenue dans QML-Rex ! Ce projet est une réimplémentation du célèbre jeu du dinosaure de Google Chrome, développé quasiment entièrement en QML.
 
 ## Aperçu
 
